@@ -2,12 +2,16 @@ import numpy as np
 
 # define size of physics environment
 class Environment():
-    def __init__(self, DIM, GRAVITY, dt):
+    def __init__(self, DIM, GRAVITY, dt,name):
         self.DIM = DIM
         self.GRAVITY = GRAVITY
         self.dt = dt
         self.particles = []
+        self.electrolytes = {}
+        self.side = name
 
+    def addNeighbor(self, env):
+        self.neighbor = env
     def update(self):
         for p1 in self.particles:
             p1.stateUpdate()
@@ -16,12 +20,19 @@ class Environment():
                 if p1 != p2:
                     self.elasticCollision(p1, p2)
     def getProbability(self,name):
-        return 0.2
+        c1 = len([x for x in self.particles if x.name==name])
+        c2 = len([x for x in self.neighbor.particles if x.name==name])
+        return c1/(c1+c2)
         # numberOfParticle = lambda self.particles: 
 
     def addParticle(self, p):
         self.particles.append(p)
         p.addAcceleration(self.GRAVITY)
+
+    def moveParticle(self, p):
+        self.particles.remove(p)
+        self.neighbor.particles.append(p)
+        # p.addAcceleration(self.GRAVITY)
 
     def bounce(self, p):
 
@@ -30,11 +41,18 @@ class Environment():
             for x in p.X[0]:
 
                 if x > self.DIM[i]-p.radius:
+                    if self.side =="left": print("right ",p.name,self.getProbability(p.name))
                     
-                    if i==0 and self.DIM[i]-x<p.radius: 
+                    if self.side =="left" and i==0: 
                         probabilityOfParticle= self.getProbability(p.name)
+
                         willPass=np.random.choice([0,1],1,p=[1-probabilityOfParticle,probabilityOfParticle])
-                        print("right ",p.name,willPass)
+                        print("right ",p.name,probabilityOfParticle,willPass)
+                        if willPass:
+                            self.moveParticle(p)
+
+                            break
+                        
                     
                     dist = p.radius-(self.DIM[i]-x)
                     p.addPosition(-dist)
@@ -42,6 +60,14 @@ class Environment():
                     tmp[i] = -2*p.V[0][i]
                     p.addVelocity(tmp)
                 elif x < p.radius: 
+                    if self.side =="right" and i==0: 
+                        probabilityOfParticle= self.getProbability(p.name)
+                        willPass=np.random.choice([0,1],1,p=[1-probabilityOfParticle,probabilityOfParticle])
+                        if willPass:
+                            self.moveParticle(p)
+
+                            break
+
                     dist = p.radius-x
                     p.addPosition(dist)
                     tmp = np.zeros(np.size(p.X))
@@ -67,7 +93,7 @@ class Environment():
 
 # define particle class
 class Particle():
-    def __init__(self, env, X, V, A, radius, mass, density,name,probability):
+    def __init__(self, env, X, V, A, radius, mass, density,name,color):
         self.env = env
         self.X = X
         self.V = V
@@ -75,9 +101,9 @@ class Particle():
         self.radius = radius
         self.mass = mass
         self.density = density
-        self.colour = (0, 0, int((density-5)/95*240+15))
+        self.colour = color
         self.name = name
-    
+        
     def addForce(self, F):
         self.A += F/self.mass
 
@@ -97,3 +123,6 @@ class Particle():
     def stateUpdate(self): 
         self.V += self.A*self.env.dt
         self.X += self.V*self.env.dt-0.5*self.A*self.env.dt**2
+
+
+
