@@ -15,16 +15,27 @@ class Environment():
             for p2 in self.particles:
                 if p1 != p2:
                     self.elasticCollision(p1, p2)
+    def getProbability(self,name):
+        return 0.2
+        # numberOfParticle = lambda self.particles: 
 
     def addParticle(self, p):
         self.particles.append(p)
         p.addAcceleration(self.GRAVITY)
 
     def bounce(self, p):
+
         for p in self.particles:
             i = 0
             for x in p.X[0]:
+
                 if x > self.DIM[i]-p.radius:
+                    
+                    if i==0 and self.DIM[i]-x<p.radius: 
+                        probabilityOfParticle= self.getProbability(p.name)
+                        willPass=np.random.choice([0,1],1,p=[1-probabilityOfParticle,probabilityOfParticle])
+                        print("right ",p.name,willPass)
+                    
                     dist = p.radius-(self.DIM[i]-x)
                     p.addPosition(-dist)
                     tmp = np.zeros(np.size(p.V))
@@ -56,7 +67,7 @@ class Environment():
 
 # define particle class
 class Particle():
-    def __init__(self, env, X, V, A, radius, mass, density):
+    def __init__(self, env, X, V, A, radius, mass, density,name,probability):
         self.env = env
         self.X = X
         self.V = V
@@ -65,6 +76,7 @@ class Particle():
         self.mass = mass
         self.density = density
         self.colour = (0, 0, int((density-5)/95*240+15))
+        self.name = name
     
     def addForce(self, F):
         self.A += F/self.mass
