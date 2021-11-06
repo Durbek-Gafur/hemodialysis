@@ -4,7 +4,7 @@ import pygame.gfxdraw
 import numpy as np
 
 pygame.init()
-DIM = np.asarray([800, 400])
+DIM = np.asarray([800, 600])
 DIM_BLOOD = np.asarray([400, 400])
 DIM_SOLUTION = np.asarray([400, 400])
 GRAVITY = np.asarray([0, 0])
@@ -14,7 +14,9 @@ screen = pygame.display.set_mode(DIM)
 pygame.display.set_caption('E-kidney')
 
 running = True
-electrolytes = [("Hydrogen",5,(51,205,51))] #[("Hydrogen",5,(51,205,51)),("Sodium",3,(151,205,151)),("Potasium",2,(51,100,51)),("Chloride",5,(151,105,51)),("Urea",3,(51,51,51))] # [("Hydrogen",5)] #
+# electrolytes = [("Hydrogen",5,(51,205,51))] #
+electrolytes = [("Hydrogen",5,(51,205,51)),("Sodium",3,(151,205,151)),("Potasium",2,(51,100,51)),("Chloride",5,(151,105,51)),("Urea",3,(51,51,51))] # [("Hydrogen",5)] #
+
 
 # need to change enviroment once particle moves to another enviroment
 blood = pf.Environment(DIM_BLOOD,[0,0],0.01,"left")
@@ -37,6 +39,13 @@ for electrolyte in electrolytes:
 		particle = pf.Particle(blood, X, V, A, radius, mass, density,electrolyte[0],color)
 		blood.addParticle(particle)
 
+def write(text):
+	screen.fill((0,0,0),(0, 400, screen.get_width(), screen.get_height()-200))
+	font = pygame.font.Font('freesansbold.ttf', 22)
+	text = font.render(text, True, (255,255,255))
+	textRect = text.get_rect()
+	textRect.center = (400,500)
+	screen.blit(text, textRect)
 
 def display(env):
 	move = 0 if env.side =="left" else 400
@@ -53,13 +62,15 @@ while running:
 			running = False
 
 	# screen.fill((205,205,205))
-	screen.fill((255,204,204), (0, 0, screen.get_width()// 2, screen.get_height()))
-	screen.fill((204,204,204), (401, 0, screen.get_width()// 2, screen.get_height()))
-
+	screen.fill((255,204,204), (0, 0, screen.get_width()// 2, screen.get_height()-200))
+	screen.fill((204,204,204), (401, 0, screen.get_width()// 2, screen.get_height()-200))
 
 	blood.update()
 	display(blood)
 	solution.update()
 	display(solution)
+	# txt = ""
+	# for p in blood.particles: txt+=p.name+" : "+str(int(blood.getProbability(p.name)*100))+" %,"
+	# write(txt)
 	pygame.display.flip()
 

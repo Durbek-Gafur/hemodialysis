@@ -9,6 +9,15 @@ class Environment():
         self.particles = []
         self.electrolytes = {}
         self.side = name
+        if name=="left":
+            self.norms = {
+                        "Hydrogen":0,
+                        "Sodium":1,
+                        "Potasium":1,
+                        "Chloride":0,
+                        "Urea":0
+                        }
+
 
     def addNeighbor(self, env):
         self.neighbor = env
@@ -20,9 +29,20 @@ class Environment():
                 if p1 != p2:
                     self.elasticCollision(p1, p2)
     def getProbability(self,name):
-        c1 = len([x for x in self.particles if x.name==name])
-        c2 = len([x for x in self.neighbor.particles if x.name==name])
-        return c1/(c1+c2)
+        if self.side =="left":
+            blood = self
+            solution= blood.neighbor
+        else:
+            solution = self
+            blood = solution.neighbor
+
+        bloodCount = len([x for x in blood.particles if x.name==name])
+        solutionCount = len([x for x in solution.particles if x.name==name])
+        
+        if blood.norms[name]==bloodCount:
+            return 0
+        sm = bloodCount+solutionCount
+        return bloodCount/sm if self.side =="left" else solutionCount/sm
         # numberOfParticle = lambda self.particles: 
 
     def addParticle(self, p):
@@ -41,13 +61,12 @@ class Environment():
             for x in p.X[0]:
 
                 if x > self.DIM[i]-p.radius:
-                    if self.side =="left": print("right ",p.name,self.getProbability(p.name))
+                    # if self.side =="left": print("right ",p.name,self.getProbability(p.name))
                     
                     if self.side =="left" and i==0: 
                         probabilityOfParticle= self.getProbability(p.name)
 
                         willPass=np.random.choice([0,1],1,p=[1-probabilityOfParticle,probabilityOfParticle])
-                        print("right ",p.name,probabilityOfParticle,willPass)
                         if willPass:
                             self.moveParticle(p)
 
