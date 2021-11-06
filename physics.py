@@ -11,11 +11,11 @@ class Environment():
         self.side = name
         if name=="left":
             self.norms = {
-                        "Hydrogen":0,
-                        "Sodium":1,
-                        "Potasium":1,
-                        "Chloride":0,
-                        "Urea":0
+                        "Hydrogen":4,
+                        "Sodium":3,
+                        "Potasium":3,
+                        "Chloride":3,
+                        "Urea":3
                         }
 
 
@@ -29,20 +29,24 @@ class Environment():
                 if p1 != p2:
                     self.elasticCollision(p1, p2)
     def getProbability(self,name):
-        if self.side =="left":
-            blood = self
-            solution= blood.neighbor
-        else:
-            solution = self
-            blood = solution.neighbor
+        c1 = len([x for x in self.particles if x.name==name])
+        c2 = len([x for x in self.neighbor.particles if x.name==name])
+        sm = c1+c2
+        return c1/sm
+        # if self.side =="left":
+        #     blood = self
+        #     solution= blood.neighbor
+        # else:
+        #     solution = self
+        #     blood = solution.neighbor
 
-        bloodCount = len([x for x in blood.particles if x.name==name])
-        solutionCount = len([x for x in solution.particles if x.name==name])
+        # bloodCount = len([x for x in blood.particles if x.name==name])
+        # solutionCount = len([x for x in solution.particles if x.name==name])
         
-        if blood.norms[name]==bloodCount:
-            return 0
-        sm = bloodCount+solutionCount
-        return bloodCount/sm if self.side =="left" else solutionCount/sm
+        # if blood.norms[name]==bloodCount:
+        #     return 0
+        # sm = bloodCount+solutionCount
+        # return bloodCount/sm if self.side =="left" else solutionCount/sm
         # numberOfParticle = lambda self.particles: 
 
     def addParticle(self, p):
