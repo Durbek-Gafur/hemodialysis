@@ -13,10 +13,7 @@ pygame.display.set_caption('E-kidney')
 
 running = True
 
-def display(env):
-	move = 0 if env.side =="left" else 400
-	for p in env.particles:
-		pygame.gfxdraw.filled_circle(screen, int(p.X[0][0])+move, int(p.X[0][1]), p.radius, p.colour)
+
 
 
 # keeps running until quitting
@@ -25,13 +22,12 @@ while running:
 		if event.type == pygame.QUIT:
 			running = False
 
-	# screen.fill((205,205,205))
 	screen.fill((255,204,204), (0, 0, screen.get_width()// 2, screen.get_height()))#-200
 	screen.fill((204,204,204), (DIM[1]+1, 0, screen.get_width()// 2, screen.get_height()))
 
 	blood.update()
-	display(blood)
+	blood.display(screen)
 	solution.update()
-	display(solution)
+	solution.display(screen)
 	pygame.display.flip()
 
