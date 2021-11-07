@@ -21,6 +21,9 @@ NORMS = {
 		# "Urea":[3,(184,0,211),15],
 		# "Drug":[0,(0,0,0),17]
 class Fluid(pf.Environment):
+	def __str__(self):
+		ans = [[key,self.countParticle(key)] for key in NORMS]
+		return str(ans)
 	def equalibrium(self,startTime):
 		count = len(NORMS)
 		for key in NORMS:
@@ -94,6 +97,8 @@ class Fluid(pf.Environment):
 
 # need to change enviroment once particle moves to another enviroment
 blood = Fluid("left")
+startTime = datetime.datetime.now()
+blood.text+="\n"+str(startTime)+"\n"
 solution = Fluid("right")
 blood.addNeighbor(solution)
 solution.addNeighbor(blood)
@@ -119,10 +124,15 @@ electrolytesExcess = [
 
 
 electrolytes = electrolytesDeficit #electrolytesExcess
+blood.text += "Blood: "+str(electrolytes)+"\n"
 blood.addElectrolytes(electrolytes)
+
 # creating solution for this blood type
 for electrolyte in electrolytes: electrolyte[1] = max(2*(NORMS[electrolyte[0]][0]) - electrolyte[1],0) 
 solution.addElectrolytes(electrolytes)
+blood.text += "Solution: "+str(solution)+"\n"
+
+
 
 
 

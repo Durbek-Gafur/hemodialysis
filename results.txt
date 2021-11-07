@@ -1,7 +1,20 @@
-Pot		0:00:01.88
-Chl		0:00:02.03
-Sod		0:00:02.25
-Hyd		0:00:03.68
-Ure		0:00:03.70
-Dru		0:00:21.16
-All		0:00:58.29
+2021-11-06 22:37:44.028783
+Blood: [['Hydrogen', 1], ['Sodium', 1], ['Potasium', 1], ['Chloride', 1], ['Urea', 1], ['Drug', 7]]
+Solution: [['Hydrogen', 7], ['Sodium', 5], ['Potasium', 5], ['Chloride', 5], ['Urea', 5], ['Drug', 0]]
+Sod		0:00:01.77
+Hyd		0:00:02.23
+Pot		0:00:02.48
+Chl		0:00:02.69
+Ure		0:00:03.14
+Dru		0:00:04.77
+All		0:00:05.78
+2021-11-06 22:38:37.257490
+Blood: [['Hydrogen', 1], ['Sodium', 1], ['Potasium', 1], ['Chloride', 1], ['Urea', 1], ['Drug', 7]]
+Solution: [['Hydrogen', 7], ['Sodium', 5], ['Potasium', 5], ['Chloride', 5], ['Urea', 5], ['Drug', 0]]
+Hyd		0:00:01.77
+Ure		0:00:01.83
+Sod		0:00:02.46
+Pot		0:00:02.46
+Chl		0:00:03.32
+Dru		0:00:04.87
+All		0:00:46.28
