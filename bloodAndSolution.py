@@ -14,7 +14,8 @@ electrolytesDeficit = [
 ["Sodium",1,(151,205,151),9],
 ["Potasium",1,(51,100,51),11],
 ["Chloride",1,(151,105,51),13],
-["Urea",1,(51,51,51),15]
+["Urea",1,(51,51,51),15],
+["Drug",7,(0,0,0),17],
 ] # [("Hydrogen",5)] #
 
 electrolytesExcess = [
@@ -22,7 +23,8 @@ electrolytesExcess = [
 ["Sodium",4,(151,205,151),9],
 ["Potasium",7,(51,100,51),11],
 ["Chloride",7,(151,105,51),13],
-["Urea",7,(51,51,51),15]
+["Urea",7,(51,51,51),15],
+["Drug",7,(0,0,0),17],
 ] # [("Hydrogen",5)] #
 
 
@@ -48,7 +50,7 @@ def createAndAdd(electrolyte,medium):
 
 
 
-electrolytes = electrolytesExcess
+electrolytes = electrolytesDeficit #electrolytesExcess
 
 
 
@@ -58,7 +60,7 @@ for electrolyte in electrolytes:
 
 # creating solution for this blood type
 for electrolyte in electrolytes:
-	electrolyte[1] = 2*(blood.norms[electrolyte[0]]) - electrolyte[1] 
+	electrolyte[1] = max(2*(blood.norms[electrolyte[0]]) - electrolyte[1],0) 
 
 	createAndAdd(electrolyte,solution)
 

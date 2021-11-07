@@ -15,7 +15,8 @@ class Environment():
                         "Sodium":3,
                         "Potasium":3,
                         "Chloride":3,
-                        "Urea":3
+                        "Urea":3,
+                        "Drug":1
                         }
 
 
@@ -29,32 +30,28 @@ class Environment():
                 if p1 != p2:
                     self.elasticCollision(p1, p2)
     def getProbability(self,name):
-        c1 = len([x for x in self.particles if x.name==name])
-        c2 = len([x for x in self.neighbor.particles if x.name==name])
-        sm = c1+c2
-        return c1/sm
-        # if self.side =="left":
-        #     blood = self
-        #     solution= blood.neighbor
-        # else:
-        #     solution = self
-        #     blood = solution.neighbor
-
-        # bloodCount = len([x for x in blood.particles if x.name==name])
-        # solutionCount = len([x for x in solution.particles if x.name==name])
-        
-        # if blood.norms[name]==bloodCount:
-        #     return 0
-        # sm = bloodCount+solutionCount
-        # return bloodCount/sm if self.side =="left" else solutionCount/sm
-        # numberOfParticle = lambda self.particles: 
+        c1 = sum(1 for x in self.particles if x.name==name)
+        c2 = sum(1 for x in self.neighbor.particles if x.name==name)
+        sm = c1/(c1+c2)
+        return np.random.choice([False,True],1,p=[1-sm,sm])
 
     def addParticle(self, p):
         self.particles.append(p)
         p.addAcceleration(self.GRAVITY)
 
-    def moveParticle(self, p):
+    def moveParticle(self, p,x):
+        c1 = len([x for x in self.particles if x.name==p.name])
+        c2 = len([x for x in self.neighbor.particles if x.name==p.name])
         self.particles.remove(p)
+        if self.side=="left" and 2*self.norms[p.name]<(c1+c2):
+            return
+        if self.side=="left": 
+            p.X[0][0] = p.radius
+            p.X[0][1] += p.radius
+        else:
+            p.X[0][0] = 400-p.radius
+            p.X[0][1] -= p.radius
+
         self.neighbor.particles.append(p)
         # p.addAcceleration(self.GRAVITY)
 
@@ -63,19 +60,12 @@ class Environment():
         for p in self.particles:
             i = 0
             for x in p.X[0]:
-
                 if x > self.DIM[i]-p.radius:
-                    # if self.side =="left": print("right ",p.name,self.getProbability(p.name))
-                    
+                    # if the right wall is hit 
                     if self.side =="left" and i==0: 
-                        probabilityOfParticle= self.getProbability(p.name)
-
-                        willPass=np.random.choice([0,1],1,p=[1-probabilityOfParticle,probabilityOfParticle])
-                        if willPass:
-                            self.moveParticle(p)
-
+                        if self.getProbability(p.name):
+                            self.moveParticle(p,x)
                             break
-                        
                     
                     dist = p.radius-(self.DIM[i]-x)
                     p.addPosition(-dist)
@@ -84,11 +74,8 @@ class Environment():
                     p.addVelocity(tmp)
                 elif x < p.radius: 
                     if self.side =="right" and i==0: 
-                        probabilityOfParticle= self.getProbability(p.name)
-                        willPass=np.random.choice([0,1],1,p=[1-probabilityOfParticle,probabilityOfParticle])
-                        if willPass:
-                            self.moveParticle(p)
-
+                        if self.getProbability(p.name):
+                            self.moveParticle(p,x)
                             break
 
                     dist = p.radius-x

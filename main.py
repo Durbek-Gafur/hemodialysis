@@ -27,7 +27,7 @@ while running:
 
 	# screen.fill((205,205,205))
 	screen.fill((255,204,204), (0, 0, screen.get_width()// 2, screen.get_height()))#-200
-	screen.fill((204,204,204), (401, 0, screen.get_width()// 2, screen.get_height()))
+	screen.fill((204,204,204), (DIM[1]+1, 0, screen.get_width()// 2, screen.get_height()))
 
 	blood.update()
 	display(blood)
