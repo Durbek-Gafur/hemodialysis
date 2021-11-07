@@ -1,25 +1,57 @@
 import physics as pf
 import pygame.gfxdraw
 import numpy as np
+import time 
+import datetime
 
 NORMS = {
 		# NAME   NORM  COLOR   RADIUS
-		"Hydrogen":[4,(51,205,51),7],
+		"Hydrogen":[4,(255,0,0),7],
 		"Sodium":[3,(151,205,151),9],
-		"Potasium":[3,(51,100,51),11],
-		"Chloride":[3,(151,105,51),13],
+		"Potasium":[3,(0,255,0),11],
+		"Chloride":[3,(0,191,255),13],
 		"Urea":[3,(51,51,51),15],
 		"Drug":[0,(0,0,0),17]
 		}
 
+		# "Hydrogen":[4,(255,0,0),7],
+		# "Sodium":[3,(255,215,0),9],
+		# "Potasium":[3,(0,255,0),11],
+		# "Chloride":[3,(0,191,255),13],
+		# "Urea":[3,(184,0,211),15],
+		# "Drug":[0,(0,0,0),17]
 class Fluid(pf.Environment):
+	def equalibrium(self,startTime):
+		count = len(NORMS)
+		for key in NORMS:
+			if NORMS[key][0]!=self.countParticle(key):
+				continue
+			count-=1
+			if key not in self.normalizedArray:
+				# time.sleep(1)				
+				self.normalizedArray.append(key) 
+				ms = str(datetime.datetime.now()-startTime)[:10]
+				self.text +=key[:3]+"\t\t"+ms+"\n"
+				print(key[:3],"\t\t",ms)
+		if count==0: 
+			ms = str(datetime.datetime.now()-startTime)[:10]
+			self.text +="All\t\t"+ms
+			print("All","\t\t",ms)
+			file1 = open("results.txt","a")
+			file1.writelines(self.text)
+			file1.close() #to change file access modes
+		return count==0
+			# print(NORMS[key][0],self.countParticle(key))
 
 	def addNeighbor(self, env):
 		self.neighbor = env
 
+	def countParticle(self,name):
+		return len([x for x in self.particles if x.name==name])
+
 	def moveParticle(self, p,x):
-		c1 = len([x for x in self.particles if x.name==p.name])
-		c2 = len([x for x in self.neighbor.particles if x.name==p.name])
+		c1 = self.countParticle(p.name)
+		c2 = self.neighbor.countParticle(p.name) 
 		self.particles.remove(p)
 		if self.side=="left" and 2*NORMS[p.name][0]<(c1+c2):
 			return
@@ -35,8 +67,8 @@ class Fluid(pf.Environment):
 
 
 	def getProbability(self,name):
-		c1 = sum(1 for x in self.particles if x.name==name)
-		c2 = sum(1 for x in self.neighbor.particles if x.name==name)
+		c1 = self.countParticle(name)
+		c2 = self.neighbor.countParticle(name) 
 		sm = c1/(c1+c2)
 		return np.random.choice([False,True],1,p=[1-sm,sm])
 

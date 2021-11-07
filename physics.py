@@ -6,9 +6,11 @@ class Environment():
 	def __init__(self,name):
 		self.DIM = np.asarray([400, 400])
 		self.GRAVITY = np.asarray([0, 0])
-		self.dt = 0.01
+		self.dt = 0.05
 		self.particles = []
 		self.side = name
+		self.normalizedArray = []
+		self.text = ""
 
 
 
