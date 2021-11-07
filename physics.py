@@ -9,7 +9,7 @@ class Environment():
 		self.dt = 0.05
 		self.particles = []
 		self.side = name
-		self.normalizedArray = []
+		self.normalizedArray = {}
 		self.text = ""
 
 

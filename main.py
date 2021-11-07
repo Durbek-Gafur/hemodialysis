@@ -44,6 +44,8 @@ while running:
 		for electrolyte in NORMS:
 			pygame.draw.line(screen, NORMS[electrolyte][1], (start, level), (start+(50*(blood.countParticle(electrolyte) - NORMS[electrolyte][0])), level),20)
 			write(screen,electrolyte,(start-300, level),NORMS[electrolyte][1])
+			if electrolyte in blood.normalizedArray:
+				write(screen,blood.normalizedArray[electrolyte],(start+300, level),NORMS[electrolyte][1])
 			level+=25
 
 		pygame.display.flip()

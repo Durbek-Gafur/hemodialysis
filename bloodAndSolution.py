@@ -32,8 +32,9 @@ class Fluid(pf.Environment):
 			count-=1
 			if key not in self.normalizedArray:
 				# time.sleep(1)				
-				self.normalizedArray.append(key) 
+				
 				ms = str(datetime.datetime.now()-startTime)[:10]
+				self.normalizedArray[key] = ms
 				self.text +=key[:3]+"\t\t"+ms+"\n"
 				print(key[:3],"\t\t",ms)
 		if count==0: 
@@ -123,7 +124,7 @@ electrolytesExcess = [
 					   ] # [("Hydrogen",5)] #
 
 
-electrolytes = electrolytesDeficit #electrolytesExcess
+electrolytes = electrolytesExcess # electrolytesDeficit #electrolytesExcess
 blood.text += "Blood: "+str(electrolytes)+"\n"
 blood.addElectrolytes(electrolytes)
 
