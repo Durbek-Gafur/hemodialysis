@@ -1,7 +1,7 @@
 # hemodialysis
-Simulation of how kidney functions
+E-kidney is a software that is used in blood cleaning process (hemodialysis) to normalize blood of intoxicated people or with kidney diseases.
 
-Used https://github.com/seanny1986/particlePhysics.git
+I used https://github.com/seanny1986/particlePhysics.git for simulation of movement of electrolytes.
 
 
 ## Inspiration
