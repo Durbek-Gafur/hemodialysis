@@ -38,11 +38,13 @@ while running:
 		solution.update()
 		solution.display(screen)
 		
-		level = 430
+		write(screen,"Deficit    Norm   Excess",(screen.get_width()//2, 420),(0,0,0))
+		level = 450
 		start = 400
 		for electrolyte in NORMS:
 			pygame.draw.line(screen, NORMS[electrolyte][1], (start, level), (start+(50*(blood.countParticle(electrolyte) - NORMS[electrolyte][0])), level),20)
-			level+=30
+			write(screen,electrolyte,(start-300, level),NORMS[electrolyte][1])
+			level+=25
 
 		pygame.display.flip()
 
