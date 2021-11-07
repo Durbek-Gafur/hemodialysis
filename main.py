@@ -19,12 +19,7 @@ while running:
 		if event.type == pygame.QUIT:
 			running = False
 	if bloodClean: continue
-	if blood.equalibrium(startTime):
-		bloodClean = True
-		# screen.fill((220,20,60), (0, 0, screen.get_width()// 2, screen.get_height()))#-200
-		# write(screen,"BLOOD IS",(screen.get_width()//4, screen.get_height()//2))
-		# write(screen,"NORMALISED",(screen.get_width()//4, screen.get_height()//2+45))
-		pygame.display.flip()
+	if blood.equalibrium(startTime): bloodClean = True
 	else:
 		screen.fill((255,255,255), (0, 0, 800,600))
 		screen.fill((255,204,204), (0, 0, screen.get_width()// 2, 400))#-200
@@ -49,5 +44,5 @@ while running:
 				write(screen,blood.normalizedArray[e],(start+300, level),NORMS[e][1])
 			level+=25
 
-		pygame.display.flip()
+	pygame.display.flip()
 

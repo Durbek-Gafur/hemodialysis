@@ -14,12 +14,6 @@ NORMS = {
 		"Drug":[0,(0,0,0),17]
 		}
 
-		# "Hydrogen":[4,(255,0,0),7],
-		# "Sodium":[3,(255,215,0),9],
-		# "Potasium":[3,(0,255,0),11],
-		# "Chloride":[3,(0,191,255),13],
-		# "Urea":[3,(184,0,211),15],
-		# "Drug":[0,(0,0,0),17]
 class Fluid(pf.Environment):
 	def __str__(self):
 		ans = [[key,self.countParticle(key)] for key in NORMS]
@@ -31,8 +25,6 @@ class Fluid(pf.Environment):
 				continue
 			count-=1
 			if key not in self.normalizedArray:
-				# time.sleep(1)				
-				
 				ms = str(datetime.datetime.now()-startTime)[:10]
 				self.normalizedArray[key] = ms
 				self.text +=key[:3]+"\t\t"+ms+"\n"
