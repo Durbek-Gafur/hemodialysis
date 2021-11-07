@@ -83,16 +83,19 @@ class Fluid(pf.Environment):
 
 	def addElectrolytes(self, electrolytes):
 		for electrolyte in electrolytes:
-			radius = NORMS[electrolyte[0]][2] 
+
+			radius = NORMS[electrolyte][2] 
 			density = np.random.randint(50, 75)
 			mass = (4/3)*density*3.14*radius**3
-			color = NORMS[electrolyte[0]][1]
-			for _ in range(electrolyte[1]):
+			color = NORMS[electrolyte][1]
+
+			for _ in range(electrolytes[electrolyte]):
+
 				# particle.addPosition(pos)
 				X = np.random.rand(1, 2)*(self.DIM-radius)+radius
 				V = np.random.rand(1, 2)*75
 				A = np.asarray([0, 0])		
-				particle = pf.Particle(blood, X, V, A, radius, mass, density,electrolyte[0],color)
+				particle = pf.Particle(blood, X, V, A, radius, mass, density,electrolyte,color)
 				self.addParticle(particle)
 
 
@@ -105,32 +108,33 @@ blood.addNeighbor(solution)
 solution.addNeighbor(blood)
 
 # electrolytes = [("Hydrogen",5,(51,205,51))] #
-electrolytesDeficit = [
-						["Hydrogen",1],
-						["Sodium",1],
-						["Potasium",1],
-						["Chloride",1],
-						["Urea",1],
-						["Drug",7],
-					   ] # [("Hydrogen",5)] #
+electrolytesDeficit = {
+						"Hydrogen":1,
+						"Sodium":1,
+						"Potasium":1,
+						"Chloride":1,
+						"Urea":1,
+						"Drug":1,
+					   } # [("Hydrogen",5)] #
 
-electrolytesExcess = [
-						["Hydrogen",7],
-						["Sodium",4],
-						["Potasium",7],
-						["Chloride",7],
-						["Urea",7],
-						["Drug",7],
-					   ] # [("Hydrogen",5)] #
+electrolytesExcess = {
+						"Hydrogen":7,
+						"Sodium":4,
+						"Potasium":7,
+						"Chloride":7,
+						"Urea":7,
+						"Drug":7,
+					   } # [("Hydrogen",5)] #
 
 
-electrolytes = electrolytesExcess # electrolytesDeficit #electrolytesExcess
+electrolytes = electrolytesDeficit # electrolytesDeficit #electrolytesExcess
 blood.text += "Blood: "+str(electrolytes)+"\n"
 blood.addElectrolytes(electrolytes)
 
 # creating solution for this blood type
-for electrolyte in electrolytes: electrolyte[1] = max(2*(NORMS[electrolyte[0]][0]) - electrolyte[1],0) 
-solution.addElectrolytes(electrolytes)
+solutionElectrolytes={}
+for electrolyte in electrolytes: solutionElectrolytes[electrolyte] = max(2*(NORMS[electrolyte][0]) - electrolytes[electrolyte],0) 
+solution.addElectrolytes(solutionElectrolytes)
 blood.text += "Solution: "+str(solution)+"\n"
 
 

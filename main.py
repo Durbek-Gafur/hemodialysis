@@ -41,11 +41,12 @@ while running:
 		write(screen,"Deficit    Norm   Excess",(screen.get_width()//2, 420),(0,0,0))
 		level = 450
 		start = 400
-		for electrolyte in NORMS:
-			pygame.draw.line(screen, NORMS[electrolyte][1], (start, level), (start+(50*(blood.countParticle(electrolyte) - NORMS[electrolyte][0])), level),20)
-			write(screen,electrolyte,(start-300, level),NORMS[electrolyte][1])
-			if electrolyte in blood.normalizedArray:
-				write(screen,blood.normalizedArray[electrolyte],(start+300, level),NORMS[electrolyte][1])
+		for e in NORMS:
+			numberOfEnow = blood.countParticle(e)
+			pygame.draw.line(screen, NORMS[e][1], (start, level), (start+(50*(numberOfEnow - NORMS[e][0])), level),20)
+			write(screen,e+" ("+str(numberOfEnow-electrolytes[e])+")",(start-300, level),NORMS[e][1])
+			if e in blood.normalizedArray:
+				write(screen,blood.normalizedArray[e],(start+300, level),NORMS[e][1])
 			level+=25
 
 		pygame.display.flip()
