@@ -118,8 +118,16 @@ electrolytesExcess = {
 						"Drug":7,
 					   } # [("Hydrogen",5)] #
 
+electrolytesRandom = {
+						"Hydrogen":np.random.randint(-4,9),
+						"Sodium":np.random.randint(-4,9),
+						"Potasium":np.random.randint(-4,9),
+						"Chloride":np.random.randint(-4,9),
+						"Urea":np.random.randint(-4,9),
+						"Drug":np.random.randint(0,9),
+					   } # [("Hydrogen",5)] #
 
-electrolytes = electrolytesDeficit # electrolytesDeficit #electrolytesExcess
+electrolytes = electrolytesRandom # electrolytesDeficit #electrolytesExcess
 blood.text += "Blood: "+str(electrolytes)+"\n"
 blood.addElectrolytes(electrolytes)
 
