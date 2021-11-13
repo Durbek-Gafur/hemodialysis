@@ -27,7 +27,7 @@ while running:
 		write(screen,"BLOOD",(screen.get_width()//4, 200))
 		write(screen,"DIALYSIS SOLUTION",(screen.get_width()//4+screen.get_width()//2, 200))
 		ms = str(datetime.datetime.now()-startTime)[:10]
-		# write(screen,ms,(screen.get_width()//2, 25))
+		# write(screen,ms,(screen.get_width()//2, 25)) write(screen,ms,(screen.get_width()//2, 25))
 		blood.update()
 		blood.display(screen)
 		solution.update()
